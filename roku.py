@@ -177,7 +177,6 @@ def main(argv):
     Initial function of the application
     Handle command opts and args in argv and act accordingly
     """
-    banner()
     print("{}{} {} - Roku Command and Control {}".format(line, K, sys.argv[0], line))
 
     global target_port
@@ -472,13 +471,6 @@ def device_information(target_host, target_port):
         print("{} {}".format(F, "Could not return device information...\n"))
 
     return True
-
-
-def banner():
-    r = requests.get("http://cyb3rnetic.ddns.net/banners/roku")
-    print("{}".format(r.text.encode('utf-8')))
-    return True
-
 
 if __name__ == "__main__":
     """
