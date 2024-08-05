@@ -13,6 +13,7 @@ their is no requirement and need for the service.
 
 Tested & Verified:
     - TCL Roku Smart-TV (TCL 32S301-W)
+    - Onn Roku Smart-TV (G814X)
 
 
 References
@@ -212,7 +213,11 @@ def main(argv):
                                                     "get=",
                                                     "channel=",
                                                     "store=",
-                                                    "tvchannels"
+                                                    "tvchannels",
+                                                    "secretscreen",
+                                                    "secretscreen2",
+                                                    "platformscreen",
+                                                    "channelinfo",
                                                     ])
     except getopt.GetoptError:
         usage(2)
@@ -283,7 +288,7 @@ def main(argv):
             print("{} Sending Fwd command....".format(K))
             post(target_host, target_port, 'keypress/Fwd')
         elif opt in ("--rev"):
-            print("{} Sending Rev command....".format(K))
+            print("{} Sending Rew command....".format(K))
             post(target_host, target_port, 'keypress/Rev')
         elif opt in ("--play"):
             print("{} Sending Play command....".format(K))
@@ -314,6 +319,18 @@ def main(argv):
         elif opt in ("--tvchannels"):
             print("{} Requesting available TV channels...".format(K))
             get_tv_channels(target_host, target_port)
+        elif opt in ("--secretscreen"):
+            print("{} Launching secret screen...".format(K))
+            secret_screen(target_host, target_port)
+        elif opt in ("--secretscreen2"):
+            print("{} Launching secret screen 2...".format(K))
+            secret_screen_two(target_host, target_port)
+        elif opt in ("--platformscreen"):
+            print("{} Launching platform screen...".format(K))
+            platform_screen(target_host, target_port)
+        elif opt in ("--channelinfo"):
+            print("{} Launching channel info screen...".format(K))
+            channel_info(target_host, target_port)
 
 
     print("\n")
@@ -331,7 +348,7 @@ def post(target_host, target_port, query):
     Perform a POST request to the Roku device
     """
     r = requests.post("http://{}:{}/{}".format(target_host, target_port, query))
-    print("{} {}!\n".format(K, r.reason))
+    print("{} {} - {}".format(K, query, r.reason))
     return True
 
 
@@ -374,6 +391,7 @@ def identify(target_port=8060):
         except Exception:
             #print("{} Check failed for {}....".format(F, lan2[0] + "." + str(oct)))
             pass
+
 
 def get_running_app(target_host, target_port):
     """
@@ -471,6 +489,112 @@ def device_information(target_host, target_port):
         print("{} {}".format(F, "Could not return device information...\n"))
 
     return True
+
+
+def secret_screen(target_host, target_port):
+    # Send home and wait 5 seconds before we begin
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(5)
+    # Home x5 - FF x3 - RW x2
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Fwd')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Fwd')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Fwd')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Rev')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Rev')
+
+
+def secret_screen_two(target_host, target_port):
+    # Send home and wait 5 seconds before we begin
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(5)
+    # Home x5 - Up - Right - Down - Left - Up
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Up')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Right')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Down')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Left')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Up')
+
+
+def platform_screen(target_host, target_port):
+    # Send home and wait 5 seconds before we begin
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(5)
+    # Home x5 - FF - Play - RW - Play - FF
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Fwd')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Play')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Rev')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Play')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Fwd')
+
+
+def channel_info(target_host, target_port):
+    # Send home and wait 5 seconds before we begin
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(5)
+    # Home (x3), Up (x2), Left, Right, Left, Right, Left
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Up')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Up')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Left')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Right')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Left')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Right')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Left')
+    time.sleep(.5)
+
 
 if __name__ == "__main__":
     """
