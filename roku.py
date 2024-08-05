@@ -151,10 +151,12 @@ def usage(code):
     print('{} --launch=<id>                   : Launch app by ID'.format(K))
     print('{} --channel=<num>                 : Launch TV input and chan'.format(K))
     print('{} --store=<contentID>             : Launch store at contentID Ex: 14=MLB'.format(K))
-    print('{} --secretscreen                  : Launch store at contentID Ex: 14=MLB'.format(K))
-    print('{} --secretscreen2                 : Launch store at contentID Ex: 14=MLB'.format(K))
-    print('{} --platformscreen                : Launch store at contentID Ex: 14=MLB'.format(K))
-    print('{} --channelinfo                   : Launch store at contentID Ex: 14=MLB'.format(K))
+    print('{} --secretscreen                  : Factory reset, beta mode, USB tests'.format(K))
+    print('{} --secretscreen2                 : Hide ads and reset various components'.format(K))
+    print('{} --platformscreen                : System operations, network and wireless screens'.format(K))
+    print('{} --channelinfo                   : Channel and program info'.format(K))
+    print('{} --developersettings             : Developer settings and side loading'.format(K))
+    print('{} --hdmisecretscreen              : HDMI secret screen with connection and port modes'.format(K))
     print('{} ------------------------------------------------------------'.format(K))
     print('{} Search'.format(K))
     print('{} ------------------------------------------------------------'.format(K))
@@ -222,6 +224,8 @@ def main(argv):
                                                     "secretscreen2",
                                                     "platformscreen",
                                                     "channelinfo",
+                                                    "developersettings",
+                                                    "hdmisecretscreen",
                                                     ])
     except getopt.GetoptError:
         usage(2)
@@ -335,6 +339,12 @@ def main(argv):
         elif opt in ("--channelinfo"):
             print("{} Launching channel info screen...".format(K))
             channel_info(target_host, target_port)
+        elif opt in ("--developersettings"):
+            print("{} Launching developer settings...".format(K))
+            developer_settings(target_host, target_port)
+        elif opt in ("--hdmisecretscreen"):
+            print("{} Launching HDMI secret screen....".format(K))
+            hdmi_secret_screen(target_host, target_port)
 
 
     print("\n")
@@ -597,6 +607,60 @@ def channel_info(target_host, target_port):
     post(target_host, target_port, 'keypress/Right')
     time.sleep(.5)
     post(target_host, target_port, 'keypress/Left')
+    time.sleep(.5)
+
+
+def developer_settings(target_host, target_port):
+    # Send home and wait 5 seconds before we begin
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(5)
+    # Home (x3), Up (x2), Right, Left, Right, Left, Right.
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Up')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Up')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Right')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Left')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Right')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Left')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Right')
+    time.sleep(.5)
+
+
+def hdmi_secret_screen(target_host, target_port):
+    # Send home and wait 5 seconds before we begin
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(5)
+    # Home (x5) - Down - Left - Up (x3)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Home')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Down')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Left')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Up')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Up')
+    time.sleep(.5)
+    post(target_host, target_port, 'keypress/Up')
     time.sleep(.5)
 
 
